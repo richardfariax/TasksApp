@@ -23,7 +23,6 @@ export default function Login() {
   const [savePassword, setSavePassword] = useState(false);
 
   useEffect(() => {
-    // Load saved username and password (if exists) when component mounts
     const loadSavedCredentials = async () => {
       try {
         const savedUsername = await AsyncStorage.getItem("username");

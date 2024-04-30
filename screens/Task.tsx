@@ -57,7 +57,7 @@ export default function Task({ route }) {
       const rowsAffected = await updateTask(updatedTask);
       if (rowsAffected > 0) {
         console.log("Tarefa concluída com sucesso:", updatedTask);
-        setEditedTask(updatedTask); // Atualiza o estado local com a tarefa concluída
+        setEditedTask(updatedTask);
         navigation.goBack();
       } else {
         console.error("Não foi possível concluir a tarefa.");
