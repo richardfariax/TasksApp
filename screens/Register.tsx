@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform, // Importe KeyboardAvoidingView
+  Platform,
 } from "react-native";
 
 export default function Register() {
@@ -21,6 +21,11 @@ export default function Register() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleRegister = async () => {
+    if (!username || !email || !cpf || !dob || !password) {
+      setErrorMessage("Todos os campos são obrigatórios.");
+      return;
+    }
+
     try {
       await registerUser(username, email, password, dob, cpf);
       navigation.navigate("Login" as never);
