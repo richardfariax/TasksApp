@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
-  KeyboardAvoidingView,
-  Platform,
   Alert,
 } from "react-native";
 import { addTask } from "../model/tasks";
@@ -66,51 +64,49 @@ export default function CreateTask() {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <ScrollView
+      contentContainerStyle={styles.container}
+      keyboardShouldPersistTaps="handled"
     >
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={styles.title}>Criar Nova Tarefa</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Título"
-          value={title}
-          onChangeText={(text) => setTitle(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Prazo (DD/MM/AAAA)"
-          value={deadline}
-          onChangeText={(text) => setDeadline(text)}
-        />
-        <TextInput
-          style={[styles.input, { height: 100 }]}
-          placeholder="Descrição"
-          multiline={true}
-          numberOfLines={4}
-          value={description}
-          onChangeText={(text) => setDescription(text)}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Data de Abertura (DD/MM/AAAA)"
-          value={openedDate}
-          onChangeText={(text) => setOpenedDate(text)}
-          editable={false}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Criado por"
-          value={createdBy}
-          onChangeText={(text) => setCreatedBy(text)}
-          editable={false}
-        />
-        <TouchableOpacity style={styles.button} onPress={handleSaveTask}>
-          <Text style={styles.buttonText}>Salvar Tarefa</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <Text style={styles.title}>Criar Nova Tarefa</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Título"
+        value={title}
+        onChangeText={(text) => setTitle(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Prazo (DD/MM/AAAA)"
+        value={deadline}
+        onChangeText={(text) => setDeadline(text)}
+      />
+      <TextInput
+        style={[styles.input, { height: 100 }]}
+        placeholder="Descrição"
+        multiline={true}
+        numberOfLines={4}
+        value={description}
+        onChangeText={(text) => setDescription(text)}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Data de Abertura (DD/MM/AAAA)"
+        value={openedDate}
+        onChangeText={(text) => setOpenedDate(text)}
+        editable={false}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Criado por"
+        value={createdBy}
+        onChangeText={(text) => setCreatedBy(text)}
+        editable={false}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSaveTask}>
+        <Text style={styles.buttonText}>Salvar Tarefa</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 }
 
@@ -119,7 +115,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "#fff",
     padding: 20,
-    justifyContent: "center",
+    paddingTop: 50,
   },
   title: {
     fontSize: 24,
