@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -11,6 +11,7 @@ import {
   ScrollView,
   Platform,
   Keyboard,
+  Switch,
 } from "react-native";
 import logo from "../assets/logo.webp";
 import { authenticateUser } from "../model/authenticateUser";
@@ -21,12 +22,40 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [savePassword, setSavePassword] = useState(false);
+
+  useEffect(() => {
+    // Load saved username and password (if exists) when component mounts
+    const loadSavedCredentials = async () => {
+      try {
+        const savedUsername = await AsyncStorage.getItem("username");
+        const savedPassword = await AsyncStorage.getItem("password");
+
+        if (savedUsername) {
+          setUsername(savedUsername);
+        }
+        if (savedPassword) {
+          setPassword(savedPassword);
+          setSavePassword(true);
+        }
+      } catch (error) {
+        console.error("Error loading saved credentials:", error);
+      }
+    };
+
+    loadSavedCredentials();
+  }, []);
 
   const handleLogin = async () => {
     try {
       const isAuthenticated = await authenticateUser(username, password);
       if (isAuthenticated) {
         await AsyncStorage.setItem("username", username);
+        if (savePassword) {
+          await AsyncStorage.setItem("password", password);
+        } else {
+          await AsyncStorage.removeItem("password");
+        }
         navigation.navigate("Tasks" as never);
       } else {
         setError("Usuário ou senha incorretos");
@@ -40,15 +69,15 @@ export default function Login() {
     navigation.navigate("Register" as never);
   };
 
+  const toggleSavePassword = () => {
+    setSavePassword((prev) => !prev);
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView
-        contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled"
-      >
         <Image source={logo} style={styles.logo} />
         <Text style={styles.title}>Bem vindo de volta!</Text>
         <TextInput
@@ -56,6 +85,7 @@ export default function Login() {
           placeholder="Nome de Usuário"
           value={username}
           onChangeText={(text) => setUsername(text)}
+          autoCapitalize="none"
         />
         <TextInput
           style={styles.input}
@@ -65,13 +95,20 @@ export default function Login() {
           onChangeText={(text) => setPassword(text)}
         />
         {error ? <Text style={styles.errorText}>{error}</Text> : null}
+        <View style={styles.savePasswordContainer}>
+          <Text>Salvar senha?</Text>
+          <Switch
+            value={savePassword}
+            onValueChange={toggleSavePassword}
+            style={{ marginLeft: 10 }}
+          />
+        </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.footer} onPress={handleRegister}>
           <Text style={styles.TextRecover}>Primeiro acesso?</Text>
         </TouchableOpacity>
-      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -82,6 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   scrollContainer: {
     flexGrow: 1,
@@ -99,14 +137,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
-    alignSelf: "center", 
+    alignSelf: "center",
   },
   footer: {
     position: "absolute",
     bottom: 20,
   },
   input: {
-    width: "100%",
+    width: "75%",
     height: 50,
     borderColor: "#ccc",
     borderWidth: 1,
@@ -115,7 +153,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   button: {
-    width: "100%",
+    width: "75%",
     backgroundColor: "#f49c4c",
     paddingVertical: 15,
     borderRadius: 5,
@@ -136,5 +174,10 @@ const styles = StyleSheet.create({
     color: "#ff0000",
     marginBottom: 8,
     fontSize: 16,
+  },
+  savePasswordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 20,
   },
 });

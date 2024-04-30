@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform, // Importe KeyboardAvoidingView
 } from "react-native";
 
 export default function Register() {
@@ -28,7 +30,10 @@ export default function Register() {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Text style={styles.title}>Criando uma conta</Text>
 
       {errorMessage ? (
@@ -71,7 +76,7 @@ export default function Register() {
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Registrar</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -81,6 +86,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 20,
   },
   title: {
     fontSize: 24,
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: "80%",
+    width: "75%",
     height: 40,
     borderColor: "#ccc",
     borderWidth: 1,
@@ -97,7 +103,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    width: 128,
+    width: "75%",
     backgroundColor: "#f49c4c",
     paddingVertical: 10,
     paddingHorizontal: 20,
