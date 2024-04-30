@@ -18,6 +18,7 @@ const windowWidth = Dimensions.get("window").width;
 export default function Tasks() {
   const navigation = useNavigation();
   const [tasks, setTasks] = useState([]);
+  const [showCompleted, setShowCompleted] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -40,17 +41,30 @@ export default function Tasks() {
     navigation.navigate("CreateTask");
   };
 
-  const renderTaskItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.taskItem}
-      onPress={() => navigation.navigate("Task",{ task: item })}
-    >
-      <Text style={styles.taskText}>{item.openedDate}</Text>
-      <Text style={[styles.taskText, styles.taskTitle]}>{item.title}</Text>
-      <Text style={styles.taskText}>Prazo: {item.deadline}</Text>
-      <Text style={styles.taskText}>Aberto por: {item.createdBy}</Text>
-    </TouchableOpacity>
-  );
+  const toggleShowCompleted = () => {
+    setShowCompleted(!showCompleted);
+  };
+
+  const renderTaskItem = ({ item }) => {
+    if (showCompleted && item.status !== "Concluída") {
+      return null;
+    }
+    if (!showCompleted && item.status === "Concluída") {
+      return null;
+    }
+
+    return (
+      <TouchableOpacity
+        style={styles.taskItem}
+        onPress={() => navigation.navigate("Task", { task: item })}
+      >
+        <Text style={styles.taskText}>{item.openedDate}</Text>
+        <Text style={[styles.taskText, styles.taskTitle]}>{item.title}</Text>
+        <Text style={styles.taskText}>Prazo: {item.deadline}</Text>
+        <Text style={styles.taskText}>Aberto por: {item.createdBy}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -61,9 +75,17 @@ export default function Tasks() {
         contentContainerStyle={styles.taskList}
         numColumns={2}
       />
-
+      
       <TouchableOpacity style={styles.button} onPress={handleCreateTask}>
         <Text style={styles.buttonText}>Criar Tarefa</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.filterButton}
+        onPress={toggleShowCompleted}
+      >
+        <Text style={styles.filterButtonText}>
+          {showCompleted ? "Mostrar Abertas" : "Mostrar Concluídas"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -75,10 +97,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
   },
-  title: {
-    fontSize: 24,
+  filterButton: {
+    backgroundColor: "#8a8a8a",
+    paddingVertical: 10,
+    borderRadius: 5,
+    marginBottom: 10,
+  },
+  filterButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    textAlign: "center",
     fontWeight: "bold",
-    marginBottom: 20,
   },
   taskList: {
     flexGrow: 1,
@@ -97,18 +126,18 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   button: {
-    width: '100%',
-    backgroundColor: '#f49c4c',
+    width: "100%",
+    backgroundColor: "#f49c4c",
     paddingVertical: 10,
     borderRadius: 5,
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 8,
   },
   buttonText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
   taskTitle: {
     fontWeight: "bold",

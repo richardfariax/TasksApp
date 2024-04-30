@@ -73,6 +73,7 @@ export default function Task({ route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {/* Inputs para editar os detalhes da tarefa */}
       <Text style={styles.titleInput}>Título:</Text>
       <TextInput
         style={styles.input}
@@ -106,19 +107,45 @@ export default function Task({ route }) {
       <Text style={styles.titleInput}>Aberto por:</Text>
       <Text style={styles.input}>{editedTask.createdBy}</Text>
 
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
-          <Icon name="save" size={20} color="#fff" />
-        </TouchableOpacity>
+      <Text style={styles.titleInput}>Status:</Text>
+      <Text style={styles.input}>{editedTask.status}</Text>
 
-        <TouchableOpacity style={[styles.button, styles.completeButton]} onPress={handleCompleteTask}>
-          <Icon name="check-circle" size={20} color="#fff" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
+      {/* Renderização condicional dos botões */}
+      {editedTask.status === "Concluída" ? (
+        <TouchableOpacity
+          style={[styles.button, styles.deleteButtonFullWidth]}
+          onPress={handleDelete}
+        >
+          <Text style={styles.buttonText}>Excluir Tarefa</Text>
           <Icon name="trash" size={20} color="#fff" />
         </TouchableOpacity>
-      </View>
+      ) : (
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={[styles.button, styles.saveButton]}
+            onPress={handleSave}
+          >
+            <Text style={styles.buttonText}>Salvar</Text>
+            <Icon name="save" size={20} color="#fff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.completeButton]}
+            onPress={handleCompleteTask}
+          >
+            <Text style={styles.buttonText}>Concluir</Text>
+            <Icon name="check-circle" size={20} color="#fff" />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.button, styles.deleteButton]}
+            onPress={handleDelete}
+          >
+            <Text style={styles.buttonText}>Excluir</Text>
+            <Icon name="trash" size={20} color="#fff" />
+          </TouchableOpacity>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -148,11 +175,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 20,
   },
+  deleteButtonFullWidth: {
+    backgroundColor: "#ff3333",
+    width: "100%",
+    marginTop: 20,
+  },
   button: {
     padding: 10,
     borderRadius: 5,
     width: "30%",
     alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
   },
   saveButton: {
     backgroundColor: "#f49c4c",
