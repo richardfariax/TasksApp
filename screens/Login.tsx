@@ -8,12 +8,10 @@ import {
   StyleSheet,
   Image,
   KeyboardAvoidingView,
-  ScrollView,
   Platform,
-  Keyboard,
   Switch,
 } from "react-native";
-import logo from "../assets/logo.webp";
+import logo from "../assets/inicio.png";
 import { authenticateUser } from "../model/authenticateUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
