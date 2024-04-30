@@ -1,17 +1,9 @@
 import React, { useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import { setupTasksTable, getAllTasks } from "../model/tasks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const windowWidth = Dimensions.get("window").width;
+import styles from "../style/Tasks";
 
 export default function Tasks() {
   const navigation = useNavigation();
@@ -44,7 +36,10 @@ export default function Tasks() {
   };
 
   const renderTaskItem = ({ item, index }) => {
-    if ((showCompleted && item.status !== "Concluída") || (!showCompleted && item.status === "Concluída")) {
+    if (
+      (showCompleted && item.status !== "Concluída") ||
+      (!showCompleted && item.status === "Concluída")
+    ) {
       return null;
     }
 
@@ -52,7 +47,7 @@ export default function Tasks() {
     const rowIndex = Math.floor(index / 2);
 
     const itemStyle = {
-      marginLeft: columnIndex === 0 ? 0 : 20, 
+      marginLeft: columnIndex === 0 ? 0 : 20,
       marginTop: rowIndex === 0 ? 0 : 20,
     };
 
@@ -86,7 +81,7 @@ export default function Tasks() {
         contentContainerStyle={styles.taskList}
         numColumns={2}
       />
-      
+
       <TouchableOpacity style={styles.button} onPress={handleCreateTask}>
         <Text style={styles.buttonText}>Criar Tarefa</Text>
       </TouchableOpacity>
@@ -101,56 +96,3 @@ export default function Tasks() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  filterButton: {
-    backgroundColor: "#8a8a8a",
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-  },
-  filterButtonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  taskList: {
-    flexGrow: 1,
-  },
-  taskItem: {
-    backgroundColor: "#f0f0f0",
-    padding: 15,
-    borderRadius: 8,
-    width: (windowWidth - 60) / 2,
-    alignItems: "flex-start",
-  },
-  taskText: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  button: {
-    width: "100%",
-    backgroundColor: "#f49c4c",
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginTop: 20,
-    marginBottom: 8,
-  },
-  buttonText: {
-    color: "#ffffff",
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  taskTitle: {
-    fontWeight: "bold",
-    fontSize: 18,
-    marginBottom: 10,
-  },
-});

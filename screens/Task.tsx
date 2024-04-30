@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert,} from "react-native";
 import { updateTask, deleteTask } from "../model/tasks";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import styles from "../style/Task";
 
 export default function Task({ route }) {
   const { task } = route.params;
@@ -73,7 +66,6 @@ export default function Task({ route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* Inputs para editar os detalhes da tarefa */}
       <Text style={styles.titleInput}>Título:</Text>
       <TextInput
         style={styles.input}
@@ -110,7 +102,6 @@ export default function Task({ route }) {
       <Text style={styles.titleInput}>Status:</Text>
       <Text style={styles.input}>{editedTask.status}</Text>
 
-      {/* Renderização condicional dos botões */}
       {editedTask.status === "Concluída" ? (
         <TouchableOpacity
           style={[styles.button, styles.deleteButtonFullWidth]}
@@ -149,53 +140,3 @@ export default function Task({ route }) {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  titleInput: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 5,
-  },
-  input: {
-    fontSize: 16,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  deleteButtonFullWidth: {
-    backgroundColor: "#ff3333",
-    width: "100%",
-    marginTop: 20,
-  },
-  button: {
-    padding: 10,
-    borderRadius: 5,
-    width: "30%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-  },
-  saveButton: {
-    backgroundColor: "#f49c4c",
-  },
-  completeButton: {
-    backgroundColor: "#4caf50",
-  },
-  deleteButton: {
-    backgroundColor: "#ff3333",
-  },
-});
