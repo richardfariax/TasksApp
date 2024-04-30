@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
-
 import {
   View,
   Text,
@@ -8,7 +7,6 @@ import {
   FlatList,
   Dimensions,
   TouchableOpacity,
-  Button,
 } from "react-native";
 import { setupTasksTable, getAllTasks } from "../model/tasks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -45,17 +43,22 @@ export default function Tasks() {
     setShowCompleted(!showCompleted);
   };
 
-  const renderTaskItem = ({ item }) => {
-    if (showCompleted && item.status !== "Concluída") {
-      return null;
-    }
-    if (!showCompleted && item.status === "Concluída") {
+  const renderTaskItem = ({ item, index }) => {
+    if ((showCompleted && item.status !== "Concluída") || (!showCompleted && item.status === "Concluída")) {
       return null;
     }
 
+    const columnIndex = index % 2;
+    const rowIndex = Math.floor(index / 2);
+
+    const itemStyle = {
+      marginLeft: columnIndex === 0 ? 0 : 20, 
+      marginTop: rowIndex === 0 ? 0 : 20,
+    };
+
     return (
       <TouchableOpacity
-        style={styles.taskItem}
+        style={[styles.taskItem, itemStyle]}
         onPress={() => navigation.navigate("Task", { task: item })}
       >
         <Text style={styles.taskText}>{item.openedDate}</Text>
@@ -66,10 +69,18 @@ export default function Tasks() {
     );
   };
 
+  const sortedTasks = tasks.filter((item) => {
+    if (showCompleted) {
+      return item.status === "Concluída";
+    } else {
+      return item.status !== "Concluída";
+    }
+  });
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={tasks}
+        data={sortedTasks}
         renderItem={renderTaskItem}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.taskList}
@@ -115,10 +126,8 @@ const styles = StyleSheet.create({
   taskItem: {
     backgroundColor: "#f0f0f0",
     padding: 15,
-    marginBottom: 20,
     borderRadius: 8,
     width: (windowWidth - 60) / 2,
-    marginRight: 20,
     alignItems: "flex-start",
   },
   taskText: {
