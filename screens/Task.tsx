@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert,} from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { updateTask, deleteTask } from "../model/tasks";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -67,34 +74,62 @@ export default function Task({ route }) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titleInput}>Título:</Text>
-      <TextInput
-        style={styles.input}
-        value={editedTask.title}
-        onChangeText={(text) => handleInputChange("title", text)}
-      />
+      {editedTask.status === "Aberta" ? (
+        <TextInput
+          style={styles.input}
+          editable={true}
+          value={editedTask.title}
+          onChangeText={(text) => handleInputChange("title", text)}
+        />
+      ) : (
+        <Text style={[styles.input, { color: "black" }]}>
+          {editedTask.title}
+        </Text>
+      )}
 
       <Text style={styles.titleInput}>Descrição:</Text>
-      <TextInput
-        style={[styles.input, { height: 100 }]}
-        multiline={true}
-        numberOfLines={4}
-        value={editedTask.description}
-        onChangeText={(text) => handleInputChange("description", text)}
-      />
+      {editedTask.status === "Aberta" ? (
+        <TextInput
+          style={[styles.input, { height: 100 }]}
+          multiline={true}
+          numberOfLines={4}
+          editable={true}
+          value={editedTask.description}
+          onChangeText={(text) => handleInputChange("description", text)}
+        />
+      ) : (
+        <Text style={[styles.input, { color: "black", height: 100 }]}>
+          {editedTask.description}
+        </Text>
+      )}
 
       <Text style={styles.titleInput}>Data de abertura:</Text>
-      <TextInput
-        style={styles.input}
-        value={editedTask.openedDate}
-        onChangeText={(text) => handleInputChange("openedDate", text)}
-      />
+      {editedTask.status === "Aberta" ? (
+        <TextInput
+          style={styles.input}
+          editable={true}
+          value={editedTask.openedDate}
+          onChangeText={(text) => handleInputChange("openedDate", text)}
+        />
+      ) : (
+        <Text style={[styles.input, { color: "black" }]}>
+          {editedTask.openedDate}
+        </Text>
+      )}
 
       <Text style={styles.titleInput}>Prazo:</Text>
-      <TextInput
-        style={styles.input}
-        value={editedTask.deadline}
-        onChangeText={(text) => handleInputChange("deadline", text)}
-      />
+      {editedTask.status === "Aberta" ? (
+        <TextInput
+          style={styles.input}
+          editable={true}
+          value={editedTask.deadline}
+          onChangeText={(text) => handleInputChange("deadline", text)}
+        />
+      ) : (
+        <Text style={[styles.input, { color: "black" }]}>
+          {editedTask.deadline}
+        </Text>
+      )}
 
       <Text style={styles.titleInput}>Aberto por:</Text>
       <Text style={styles.input}>{editedTask.createdBy}</Text>
