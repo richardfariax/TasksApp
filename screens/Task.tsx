@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Alert } from "react-native";
 import { updateTask, deleteTask } from "../model/tasks";
 import { useNavigation } from "@react-navigation/native";
 
@@ -9,6 +9,11 @@ export default function Task({ route }) {
   const navigation = useNavigation();
 
   const handleSave = async () => {
+    if (!editedTask.title.trim()) {
+      showAlert("Atenção", "Por favor, preencha o campo Título.");
+      return;
+    }
+
     try {
       const rowsAffected = await updateTask(editedTask);
       if (rowsAffected > 0) {
@@ -35,6 +40,10 @@ export default function Task({ route }) {
   const handleInputChange = (field, value) => {
     const updatedTask = { ...editedTask, [field]: value };
     setEditedTask(updatedTask);
+  };
+
+  const showAlert = (title, message) => {
+    Alert.alert(title, message);
   };
 
   return (
