@@ -61,7 +61,7 @@ export default function Tasks() {
         <Text style={styles.taskText}>{item.openedDate}</Text>
         <Text style={[styles.taskText, styles.taskTitle]}>{item.title}</Text>
         <Text style={styles.taskText}>Prazo: {item.deadline}</Text>
-        <Text style={styles.taskText}>Aberto por: {item.createdBy}</Text>
+        <Text style={styles.taskText}>{item.status}</Text>
       </TouchableOpacity>
     );
   };

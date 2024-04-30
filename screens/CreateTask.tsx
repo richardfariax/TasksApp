@@ -19,7 +19,7 @@ export default function CreateTask() {
   const [openedDate, setOpenedDate] = useState("");
   const [createdBy, setCreatedBy] = useState("");
   const [deadline, setDeadline] = useState("");
-  const [status, setStatus] = useState("Aberto");
+  const [status, setStatus] = useState("Aberta");
   const [description, setDescription] = useState("");
 
   useEffect(() => {
