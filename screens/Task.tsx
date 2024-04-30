@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { updateTask, deleteTask } from "../model/tasks";
 import { useNavigation } from "@react-navigation/native";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default function Task({ route }) {
   const { task } = route.params;
@@ -48,6 +49,22 @@ export default function Task({ route }) {
   const handleInputChange = (field, value) => {
     const updatedTask = { ...editedTask, [field]: value };
     setEditedTask(updatedTask);
+  };
+
+  const handleCompleteTask = async () => {
+    const updatedTask = { ...editedTask, status: "Concluída" };
+    try {
+      const rowsAffected = await updateTask(updatedTask);
+      if (rowsAffected > 0) {
+        console.log("Tarefa concluída com sucesso:", updatedTask);
+        setEditedTask(updatedTask); // Atualiza o estado local com a tarefa concluída
+        navigation.goBack();
+      } else {
+        console.error("Não foi possível concluir a tarefa.");
+      }
+    } catch (error) {
+      console.error("Erro ao concluir a tarefa:", error);
+    }
   };
 
   const showAlert = (title, message) => {
@@ -89,13 +106,19 @@ export default function Task({ route }) {
       <Text style={styles.titleInput}>Aberto por:</Text>
       <Text style={styles.input}>{editedTask.createdBy}</Text>
 
-      <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-        <Text style={styles.buttonText}>Salvar</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={[styles.button, styles.saveButton]} onPress={handleSave}>
+          <Icon name="save" size={20} color="#fff" />
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.deleteButton} onPress={handleDelete}>
-        <Text style={styles.buttonText}>Excluir Tarefa</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, styles.completeButton]} onPress={handleCompleteTask}>
+          <Icon name="check-circle" size={20} color="#fff" />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={handleDelete}>
+          <Icon name="trash" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }
@@ -120,22 +143,24 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 5,
   },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  button: {
+    padding: 10,
+    borderRadius: 5,
+    width: "30%",
+    alignItems: "center",
+  },
   saveButton: {
     backgroundColor: "#f49c4c",
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginTop: 20,
+  },
+  completeButton: {
+    backgroundColor: "#4caf50",
   },
   deleteButton: {
     backgroundColor: "#ff3333",
-    paddingVertical: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });
