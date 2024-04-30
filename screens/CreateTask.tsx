@@ -1,29 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
-import { addTask } from '../model/tasks';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import moment from 'moment';
+import React, { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
+import { addTask } from "../model/tasks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import moment from "moment";
 
 export default function CreateTask() {
   const navigation = useNavigation();
-  const [title, setTitle] = useState('');
-  const [openedDate, setOpenedDate] = useState('');
-  const [createdBy, setCreatedBy] = useState('');
-  const [deadline, setDeadline] = useState('');
-  const [status, setStatus] = useState('Aberto');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [openedDate, setOpenedDate] = useState("");
+  const [createdBy, setCreatedBy] = useState("");
+  const [deadline, setDeadline] = useState("");
+  const [status, setStatus] = useState("Aberto");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
-    const currentDate = moment().format('DD/MM/YYYY');
+    const currentDate = moment().format("DD/MM/YYYY");
     setOpenedDate(currentDate);
 
     const getUsername = async () => {
       try {
-        const username = await AsyncStorage.getItem('username');
+        const username = await AsyncStorage.getItem("username");
         setCreatedBy(username);
       } catch (error) {
-        console.error('Erro ao obter o nome de usuário:', error);
+        console.error("Erro ao obter o nome de usuário:", error);
       }
     };
 
@@ -31,18 +41,34 @@ export default function CreateTask() {
   }, []);
 
   const handleSaveTask = async () => {
+    if (!title.trim()) {
+      showAlert("Atenção", "Por favor, preencha o campo Título.");
+      return;
+    }
+
     try {
-      await addTask(title, openedDate, createdBy, deadline, status, description);
+      await addTask(
+        title,
+        openedDate,
+        createdBy,
+        deadline,
+        status,
+        description
+      );
       navigation.goBack();
     } catch (error) {
-      console.error('Erro ao salvar a tarefa:', error);
+      console.error("Erro ao salvar a tarefa:", error);
     }
+  };
+
+  const showAlert = (title, message) => {
+    Alert.alert(title, message);
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Criar Nova Tarefa</Text>
@@ -91,13 +117,13 @@ export default function CreateTask() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
@@ -106,20 +132,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 5,
   },
   button: {
-    width: '100%',
-    backgroundColor: '#f49c4c',
+    width: "100%",
+    backgroundColor: "#f49c4c",
     paddingVertical: 10,
     borderRadius: 5,
     marginTop: 20,
   },
   buttonText: {
-    color: '#ffffff',
+    color: "#ffffff",
     fontSize: 16,
-    textAlign: 'center',
-    fontWeight: 'bold',
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
