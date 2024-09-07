@@ -56,6 +56,14 @@ export default function CreateTask() {
     Alert.alert(title, message);
   };
 
+  const handleDeadlineChange = (text) => {
+    const formattedDate = moment(text, 'DDMMYYYY', true).isValid()
+      ? moment(text, 'DD/MM/YYYY').format('DD/MM/YYYY')
+      : text;
+
+    setDeadline(formattedDate);
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
@@ -70,9 +78,9 @@ export default function CreateTask() {
       />
       <TextInput
         style={styles.input}
-        placeholder="Prazo (DD/MM/AAAA)"
+        placeholder="Prazo DDMMAAAA"
         value={deadline}
-        onChangeText={(text) => setDeadline(text)}
+        onChangeText={handleDeadlineChange}
       />
       <TextInput
         style={[styles.input, { height: 100 }]}

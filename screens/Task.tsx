@@ -11,6 +11,7 @@ import { updateTask, deleteTask } from "../model/tasks";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import styles from "../style/Task";
+import moment from "moment";
 
 export default function Task({ route }) {
   const { task } = route.params;
@@ -71,6 +72,18 @@ export default function Task({ route }) {
     Alert.alert(title, message);
   };
 
+  const handleDeadlineChange = (text) => {    
+    const formattedDate = moment(text, 'DDMMYYYY', true).isValid()
+    ? moment(text, 'DD/MM/YYYY').format('DD/MM/YYYY')
+    : text;
+
+
+    setEditedTask((prev) => ({
+      ...prev,
+      deadline: formattedDate,
+    }));
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.titleInput}>Título:</Text>
@@ -102,29 +115,16 @@ export default function Task({ route }) {
           {editedTask.description}
         </Text>
       )}
-
       <Text style={styles.titleInput}>Data de abertura:</Text>
-      {editedTask.status === "Aberta" ? (
-        <TextInput
-          style={styles.input}
-          editable={true}
-          value={editedTask.openedDate}
-          onChangeText={(text) => handleInputChange("openedDate", text)}
-        />
-      ) : (
-        <Text style={[styles.input, { color: "black" }]}>
-          {editedTask.openedDate}
-        </Text>
-      )}
-
+      <Text style={styles.input}>{editedTask.openedDate}</Text>
       <Text style={styles.titleInput}>Prazo:</Text>
       {editedTask.status === "Aberta" ? (
         <TextInput
-          style={styles.input}
-          editable={true}
-          value={editedTask.deadline}
-          onChangeText={(text) => handleInputChange("deadline", text)}
-        />
+        style={styles.input}
+        placeholder="Editar o prazo"
+        value={editedTask.deadline}
+        onChangeText={handleDeadlineChange}
+      />
       ) : (
         <Text style={[styles.input, { color: "black" }]}>
           {editedTask.deadline}
