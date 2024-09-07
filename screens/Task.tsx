@@ -116,7 +116,7 @@ export default function Task({ route }) {
         </Text>
       )}
       <Text style={styles.titleInput}>Data de abertura:</Text>
-      <Text style={styles.input}>{editedTask.openedDate}</Text>
+      <TextInput editable={false} style={styles.input}>{editedTask.openedDate}</TextInput>
       <Text style={styles.titleInput}>Prazo:</Text>
       {editedTask.status === "Aberta" ? (
         <TextInput
@@ -132,10 +132,10 @@ export default function Task({ route }) {
       )}
 
       <Text style={styles.titleInput}>Aberto por:</Text>
-      <Text style={styles.input}>{editedTask.createdBy}</Text>
+      <TextInput editable={false} style={styles.input}>{editedTask.createdBy.toUpperCase()}</TextInput>
 
       <Text style={styles.titleInput}>Status:</Text>
-      <Text style={styles.input}>{editedTask.status}</Text>
+      <TextInput editable={false} style={styles.input}>{editedTask.status}</TextInput>
 
       {editedTask.status === "Concluída" ? (
         <TouchableOpacity
