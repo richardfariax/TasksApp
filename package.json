@@ -13,7 +13,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@types/react": "~18.2.45",
-    "expo": "~50.0.14",
+    "expo": "51.0.32",
     "expo-local-authentication": "^13.8.0",
     "expo-sqlite": "~13.4.0",
     "expo-status-bar": "~1.11.1",
