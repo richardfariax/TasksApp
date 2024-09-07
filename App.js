@@ -21,11 +21,11 @@ export default function App() {
           component={Login}
         />
         <StackNavigation.Screen
-          options={{ headerBackVisible: false, title: "Tarefas" }}
+          options={{animation: 'slide_from_bottom', title: "Tarefas" }}
           name="Tasks"
           component={Tasks}
         />
-        <StackNavigation.Screen name="Task" component={Task} />
+        <StackNavigation.Screen name="Task" component={Task} options={{animation: 'slide_from_bottom',}} />
         <StackNavigation.Screen
           name="Register"
           component={Register}
@@ -37,6 +37,7 @@ export default function App() {
           name="CreateTask"
           component={CreateTask}
           options={{
+            animation: 'slide_from_bottom',
             title: "",
           }}
         />

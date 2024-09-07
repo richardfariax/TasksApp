@@ -56,24 +56,34 @@ export default function CreateTask() {
     Alert.alert(title, message);
   };
 
+  const handleDeadlineChange = (text) => {
+    const formattedDate = moment(text, 'DDMMYYYY', true).isValid()
+      ? moment(text, 'DD/MM/YYYY').format('DD/MM/YYYY')
+      : text;
+
+    setDeadline(formattedDate);
+  };
+
   return (
     <ScrollView
       contentContainerStyle={styles.container}
       keyboardShouldPersistTaps="handled"
     >
-      <Text style={styles.title}>Criar Nova Tarefa</Text>
+      <Text style={styles.title}>Título:</Text>
       <TextInput
         style={styles.input}
         placeholder="Título"
         value={title}
         onChangeText={(text) => setTitle(text)}
       />
+      <Text style={styles.title}>Prazo:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Prazo (DD/MM/AAAA)"
+        placeholder="Prazo DDMMAAAA"
         value={deadline}
-        onChangeText={(text) => setDeadline(text)}
+        onChangeText={handleDeadlineChange}
       />
+      <Text style={styles.title}>Descrição:</Text>
       <TextInput
         style={[styles.input, { height: 100 }]}
         placeholder="Descrição"
@@ -82,6 +92,8 @@ export default function CreateTask() {
         value={description}
         onChangeText={(text) => setDescription(text)}
       />
+      <Text style={styles.title}>Data de Abertura:</Text>
+
       <TextInput
         style={styles.input}
         placeholder="Data de Abertura (DD/MM/AAAA)"
@@ -89,9 +101,10 @@ export default function CreateTask() {
         onChangeText={(text) => setOpenedDate(text)}
         editable={false}
       />
+      <Text style={styles.title}>Aberto por:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Criado por"
+        placeholder="Aberto por"
         value={createdBy}
         onChangeText={(text) => setCreatedBy(text)}
         editable={false}

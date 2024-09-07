@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TextInput, TouchableOpacity, Image, KeyboardAvoidingView, Platform, Switch,} from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Switch,
+} from "react-native";
 import logo from "../assets/inicio.png";
 import { authenticateUser } from "../model/authenticateUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";

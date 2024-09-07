@@ -3,22 +3,23 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff",
-    padding: 20,
+    backgroundColor: "#f5f5f5",
+    padding: 20, 
   },
   titleInput: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 5,
   },
   input: {
-    fontSize: 16,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
+    width: "100%",
+    height: 50,
+    borderColor: "#ddd",
     borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    backgroundColor: "#fff",
+    fontSize: 16,
   },
   buttonContainer: {
     flexDirection: "row",
