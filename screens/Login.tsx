@@ -15,7 +15,6 @@ import { authenticateUser } from "../model/authenticateUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styles from "../style/Login";
 
-
 export default function Login() {
   const navigation = useNavigation();
   const [username, setUsername] = useState("");
@@ -73,79 +72,39 @@ export default function Login() {
 
   return (
     <KeyboardAvoidingView
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f5f5f5",
-        padding: 20,
-      }}
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-    <Image source={logo} style={styles.logo} />
-
-      <Text style={{ fontSize: 24, fontWeight: "bold", marginBottom: 20, marginTop: -40, color: "#333" }}>
-        Bem vindo de volta!
-      </Text>
+      <Image source={logo} style={styles.logo} />
+      <Text style={styles.title}>Bem vindo de volta!</Text>
       <TextInput
-        style={{
-          width: "100%",
-          height: 50,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          borderRadius: 10,
-          paddingHorizontal: 15,
-          marginBottom: 15,
-          backgroundColor: "#fff",
-          fontSize: 16,
-        }}
+        style={styles.input}
         placeholder="Nome de Usuário"
         value={username}
         onChangeText={(text) => setUsername(text)}
         autoCapitalize="none"
       />
       <TextInput
-        style={{
-          width: "100%",
-          height: 50,
-          borderColor: "#ddd",
-          borderWidth: 1,
-          borderRadius: 10,
-          paddingHorizontal: 15,
-          marginBottom: 15,
-          backgroundColor: "#fff",
-          fontSize: 16,
-        }}
+        style={styles.input}
         placeholder="Senha"
         secureTextEntry={true}
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      {error ? <Text style={{ color: "red", marginBottom: 10 }}>{error}</Text> : null}
-      <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}>
-        <Text style={{ fontSize: 16 }}>Salvar senha?</Text>
+      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      <View style={styles.savePasswordContainer}>
+        <Text>Salvar senha?</Text>
         <Switch
           value={savePassword}
           onValueChange={toggleSavePassword}
           style={{ marginLeft: 10 }}
         />
       </View>
-      <TouchableOpacity
-        style={{
-          backgroundColor: "#4CAF50",
-          paddingVertical: 15,
-          paddingHorizontal: 80,
-          borderRadius: 10,
-          marginBottom: 15,
-          width: "100%",
-          alignItems: "center",
-        }}
-        onPress={handleLogin}
-      >
-        <Text style={{ color: "#fff", fontSize: 18, fontWeight: "bold" }}>Entrar</Text>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleRegister}>
-        <Text style={{ color: "#1E90FF", fontSize: 16 }}>Primeiro acesso?</Text>
+      <TouchableOpacity style={styles.footer} onPress={handleRegister}>
+        <Text style={styles.TextRecover}>Primeiro acesso?</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
